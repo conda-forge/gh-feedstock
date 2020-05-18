@@ -5,14 +5,14 @@ on:
       - completed
 
 jobs:
-  regro-cf-autotick-bot-action:
+  automerge-action:
     runs-on: ubuntu-latest
-    name: regro-cf-autotick-bot-action
+    name: automerge
     steps:
       - name: checkout
         uses: actions/checkout@v2
-      - name: regro-cf-autotick-bot-action
-        id: regro-cf-autotick-bot-action
-        uses: regro/cf-autotick-bot-action@master
+      - name: automerge-action
+        id: automerge-action
+        uses: conda-forge/automerge-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
