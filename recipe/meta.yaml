@@ -1,13 +1,13 @@
 {% set name = "gh" %}
-{% set version = "0.6.1" %}
+{% set version = "0.8.0" %}
 
 package:
-  name: "{{ name|lower }}"
-  version: "{{ version }}"
+  name: {{ name|lower }}
+  version: {{ version }}
 
 source:
-  url: "https://github.com/cli/cli/archive/v{{ version }}.tar.gz"
-  sha256: 237b18f9e3c82caa1cb06df3ca763ad7b32dab7e9a9a6f89afe7593bc31c3290
+  url: https://github.com/cli/cli/archive/v{{ version }}.tar.gz
+  sha256: 6439f2b01681be33b2b3fa313abdb700e5f6344ddff5e0fe8e01226c20d36442
 
 build:
   number: 0
@@ -25,7 +25,7 @@ about:
   license: Apache-2.0
   license_family: APACHE
   license_file: LICENSE
-  summary: "Github CLI."
+  summary: Github CLI.
   doc_url: https://cli.github.com/
   dev_url: https://github.com/cli/cli
 
