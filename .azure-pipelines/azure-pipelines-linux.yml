@@ -8,8 +8,8 @@ jobs:
     vmImage: ubuntu-16.04
   strategy:
     matrix:
-      linux_:
-        CONFIG: linux_
+      linux_64_:
+        CONFIG: linux_64_
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: condaforge/linux-anvil-comp7
     maxParallel: 8

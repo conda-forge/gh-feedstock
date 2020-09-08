@@ -8,5 +8,5 @@ go_compiler:
 - go-nocgo
 macos_machine:
 - x86_64-apple-darwin13.4.0
-macos_min_version:
-- '10.9'
+target_platform:
+- osx-64
