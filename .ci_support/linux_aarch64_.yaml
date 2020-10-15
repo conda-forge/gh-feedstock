@@ -1,0 +1,16 @@
+BUILD:
+- aarch64-conda_cos7-linux-gnu
+cdt_arch:
+- aarch64
+cdt_name:
+- cos7
+channel_sources:
+- conda-forge
+channel_targets:
+- conda-forge main
+docker_image:
+- condaforge/linux-anvil-aarch64
+go_compiler:
+- go-nocgo
+target_platform:
+- linux-aarch64
