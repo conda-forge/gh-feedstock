@@ -11,7 +11,6 @@ jobs:
       win_64_:
         CONFIG: win_64_
         UPLOAD_PACKAGES: 'True'
-    maxParallel: 4
   timeoutInMinutes: 360
   variables:
     CONDA_BLD_PATH: D:\\bld\\
@@ -53,7 +52,7 @@ jobs:
 
     - task: CondaEnvironment@1
       inputs:
-        packageSpecs: 'python=3.6 conda-build conda conda-forge::conda-forge-ci-setup=3 pip' # Optional
+        packageSpecs: 'python=3.6 conda-build conda "conda-forge-ci-setup=3" pip' # Optional
         installOptions: "-c conda-forge"
         updateConda: true
       displayName: Install conda-build and activate environment
