@@ -8,7 +8,7 @@ platform:
 
 steps:
 - name: Install and build
-  image: condaforge/linux-anvil-aarch64
+  image: quay.io/condaforge/linux-anvil-aarch64
   environment:
     CONFIG: linux_aarch64_
     UPLOAD_PACKAGES: True
