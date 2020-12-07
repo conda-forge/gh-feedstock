@@ -1,0 +1,12 @@
+MACOSX_DEPLOYMENT_TARGET:
+- '11.0'
+channel_sources:
+- conda-forge/label/rust_dev,conda-forge
+channel_targets:
+- conda-forge main
+go_compiler:
+- go-nocgo
+macos_machine:
+- arm64-apple-darwin20.0.0
+target_platform:
+- osx-arm64
