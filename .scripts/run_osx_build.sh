@@ -1,29 +1,24 @@
 #!/usr/bin/env bash
 
+source .scripts/logging_utils.sh
+
 set -x
 
-echo -e "\n\nInstalling a fresh version of Miniforge."
-if [[ ${CI} == "travis" ]]; then
-  echo -en 'travis_fold:start:install_miniforge\\r'
-fi
+startgroup "Installing a fresh version of Miniforge"
 MINIFORGE_URL="https://github.com/conda-forge/miniforge/releases/latest/download"
 MINIFORGE_FILE="Miniforge3-MacOSX-x86_64.sh"
 curl -L -O "${MINIFORGE_URL}/${MINIFORGE_FILE}"
 bash $MINIFORGE_FILE -b
-if [[ ${CI} == "travis" ]]; then
-  echo -en 'travis_fold:end:install_miniforge\\r'
-fi
+endgroup "Installing a fresh version of Miniforge"
 
-echo -e "\n\nConfiguring conda."
-if [[ ${CI} == "travis" ]]; then
-  echo -en 'travis_fold:start:configure_conda\\r'
-fi
+startgroup "Configuring conda"
+BUILD_CMD=build
 
 source ${HOME}/miniforge3/etc/profile.d/conda.sh
 conda activate base
 
 echo -e "\n\nInstalling conda-forge-ci-setup=3 and conda-build."
-conda install -n base --quiet --yes "conda-forge-ci-setup=3" conda-build pip
+conda install -n base --quiet --yes "conda-forge-ci-setup=3" conda-build pip ${GET_BOA:-}
 
 
 
@@ -39,19 +34,22 @@ echo -e "\n\nRunning the build setup script."
 source run_conda_forge_build_setup
 
 
-if [[ ${CI} == "travis" ]]; then
-  echo -en 'travis_fold:end:configure_conda\\r'
-fi
+endgroup "Configuring conda"
 
 set -e
 
-echo -e "\n\nMaking the build clobber file and running the build."
+startgroup "Running conda $BUILD_CMD"
+echo -e "\n\nMaking the build clobber file"
 make_build_number ./ ./recipe ./.ci_support/${CONFIG}.yaml
 
-conda build ./recipe -m ./.ci_support/${CONFIG}.yaml --suppress-variables --clobber-file ./.ci_support/clobber_${CONFIG}.yaml ${EXTRA_CB_OPTIONS:-}
+conda $BUILD_CMD ./recipe -m ./.ci_support/${CONFIG}.yaml --suppress-variables --clobber-file ./.ci_support/clobber_${CONFIG}.yaml ${EXTRA_CB_OPTIONS:-}
+endgroup "Running conda build"
+startgroup "Validating outputs"
 validate_recipe_outputs "${FEEDSTOCK_NAME}"
+endgroup "Validating outputs"
 
 if [[ "${UPLOAD_PACKAGES}" != "False" ]]; then
-  echo -e "\n\nUploading the packages."
+  startgroup "Uploading packages"
   upload_package --validate --feedstock-name="${FEEDSTOCK_NAME}" ./ ./recipe ./.ci_support/${CONFIG}.yaml
+  endgroup "Uploading packages"
 fi
