@@ -10,7 +10,7 @@ source:
   sha256: 662654baa32550527b97faf38c34254bafe9b7889dc65451cbec3d6dacee2a06
 
 build:
-  number: 0
+  number: 1
 
 requirements:
   build:
@@ -31,5 +31,6 @@ about:
 
 extra:
   recipe-maintainers:
+    - mxr-conda
     - rluria14
     - oblute
