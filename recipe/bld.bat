@@ -10,9 +10,9 @@ if errorlevel 1 exit 1
 go build -v -o %PKG_NAME%.exe .
 if errorlevel 1 exit 1
 
-:: Install Binary into %PREFIX%\bin
-mkdir -p %PREFIX%\bin
+:: Install Binary into %SCRIPTS%
+if not exist %SCRIPTS% mkdir %SCRIPTS%
 if errorlevel 1 exit 1
 
-mv %PKG_NAME% %PREFIX%\bin\%PKG_NAME%
+mv %PKG_NAME% %SCRIPTS%\%PKG_NAME%
 if errorlevel 1 exit 1

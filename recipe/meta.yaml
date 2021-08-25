@@ -10,7 +10,9 @@ source:
   sha256: 1a99050644b4821477aabc7642bbcae8a19b3191e9227cd8078016d78cdd83ac
 
 build:
-  number: 0
+  script_env:
+   - GH_VERSION=v{{ version }}
+  number: 1
 
 requirements:
   build:
