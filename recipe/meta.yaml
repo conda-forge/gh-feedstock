@@ -12,7 +12,7 @@ source:
 build:
   script_env:
    - GH_VERSION=v{{ version }}
-  number: 2
+  number: 3
 
 requirements:
   build:
