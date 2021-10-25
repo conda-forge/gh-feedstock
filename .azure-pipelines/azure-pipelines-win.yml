@@ -52,7 +52,7 @@ jobs:
 
     - task: CondaEnvironment@1
       inputs:
-        packageSpecs: 'python=3.6 conda-build conda "conda-forge-ci-setup=3" pip' # Optional
+        packageSpecs: 'python=3.9 conda-build conda "conda-forge-ci-setup=3" pip boa' # Optional
         installOptions: "-c conda-forge"
         updateConda: true
       displayName: Install conda-build and activate environment
@@ -86,7 +86,7 @@ jobs:
 
     - script: |
         call activate base
-        conda.exe build "recipe" -m .ci_support\%CONFIG%.yaml --suppress-variables
+        conda.exe mambabuild "recipe" -m .ci_support\%CONFIG%.yaml --suppress-variables
       displayName: Build recipe
       env:
         PYTHONUNBUFFERED: 1
@@ -107,4 +107,4 @@ jobs:
         BINSTAR_TOKEN: $(BINSTAR_TOKEN)
         FEEDSTOCK_TOKEN: $(FEEDSTOCK_TOKEN)
         STAGING_BINSTAR_TOKEN: $(STAGING_BINSTAR_TOKEN)
-      condition: and(succeeded(), not(eq(variables['UPLOAD_PACKAGES'], 'False')))
+      condition: and(succeeded(), not(eq(variables['UPLOAD_PACKAGES'], 'False')), not(eq(variables['Build.Reason'], 'PullRequest')))

@@ -25,6 +25,7 @@ steps:
     - export CI=drone
     - export GIT_BRANCH="$DRONE_BRANCH"
     - export FEEDSTOCK_NAME=$(basename ${DRONE_REPO_NAME})
+    - export IS_PR_BUILD=$(if [[ "$${DRONE_PULL_REQUEST:-}" == "" ]]; then echo "False"; else echo "True"; fi)
     - sed -i '$ichown -R conda:conda "$FEEDSTOCK_ROOT"' /opt/docker/bin/entrypoint
     - /opt/docker/bin/entrypoint $FEEDSTOCK_ROOT/.scripts/build_steps.sh
     - echo "Done building"

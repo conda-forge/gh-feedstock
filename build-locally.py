@@ -13,6 +13,7 @@ import platform
 def setup_environment(ns):
     os.environ["CONFIG"] = ns.config
     os.environ["UPLOAD_PACKAGES"] = "False"
+    os.environ["IS_PR_BUILD"] = "True"
     if ns.debug:
         os.environ["BUILD_WITH_CONDA_DEBUG"] = "1"
         if ns.output_id:
