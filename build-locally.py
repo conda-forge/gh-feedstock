@@ -22,6 +22,10 @@ def setup_environment(ns):
         os.environ["MINIFORGE_HOME"] = os.path.join(
             os.path.dirname(__file__), "miniforge3"
         )
+    if "OSX_SDK_DIR" not in os.environ:
+        os.environ["OSX_SDK_DIR"] = os.path.join(
+            os.path.dirname(__file__), "SDKs"
+        )
 
 
 def run_docker_build(ns):

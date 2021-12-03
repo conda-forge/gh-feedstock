@@ -5,11 +5,8 @@ channel_sources:
 channel_targets:
 - conda-forge main
 docker_image:
-- quay.io/condaforge/linux-anvil-comp7
+- quay.io/condaforge/linux-anvil-cos7-x86_64
 go_compiler:
 - go-nocgo
 target_platform:
 - linux-64
-zip_keys:
-- - cdt_name
-  - docker_image

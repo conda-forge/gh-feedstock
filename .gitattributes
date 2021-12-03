@@ -18,6 +18,7 @@ bld.bat text eol=crlf
 .gitignore linguist-generated=true
 .travis.yml linguist-generated=true
 .scripts/* linguist-generated=true
+.woodpecker.yml linguist-generated=true
 LICENSE.txt linguist-generated=true
 README.md linguist-generated=true
 azure-pipelines.yml linguist-generated=true
