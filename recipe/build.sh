@@ -4,13 +4,10 @@ set -ex
 
 export GOPATH=$SRC_DR
 export PATH=${GOPATH}/bin:$PATH
+export GOARCH=$target_goarch
 
 # Build
-if [[ "$CONDA_BUILD_CROSS_COMPILATION" != "1" ]]; then
-    make bin/gh manpages
-else
-    make bin/gh
-fi
+make bin/gh manpages
 
 # Install
 make install prefix=$PREFIX
