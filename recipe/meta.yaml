@@ -12,15 +12,17 @@ source:
 build:
   script_env:
     - GH_VERSION=v{{ version }}
-  number: 0
+  number: 1
 
 requirements:
   build:
     - {{ compiler('go') }}
+    - make  # [unix]
 
 test:
   commands:
     - gh help
+    - gh version
 
 about:
   home: https://github.com/cli/cli
