@@ -18,7 +18,9 @@ fi
 make bin/gh
 
 # Install
-mkdir -p $PREFIX/bin
-install -m755 bin/gh ${PREFIX}/bin
-mkdir -p $PREFIX/share/man/man1
-install -m644 ./share/man/man1/* $PREFIX/share/man/man1/
+file bin/gh
+make install prefix=$PREFIX
+# mkdir -p $PREFIX/bin
+# install -m755 bin/gh ${PREFIX}/bin
+# mkdir -p $PREFIX/share/man/man1
+# install -m644 ./share/man/man1/* $PREFIX/share/man/man1/
