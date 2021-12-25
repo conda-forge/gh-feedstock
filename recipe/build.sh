@@ -6,7 +6,8 @@ export GOPATH=$SRC_DR
 export PATH=${GOPATH}/bin:$PATH
 
 if [[ $target_platform == "osx-arm64" ]]; then
-    (cd cmd/gen-docs; go build -v -o gen-docs .)
+    # build gen-docs manually as it needs to be run to create the man-pages
+    (cd cmd/gen-docs; GOARCH=amd64 go build -v -o gen-docs .)
     go run ./cmd/gen-docs --man-page --doc-path ./share/man/man1/
     export GOARCH=arm64
 fi
