@@ -12,10 +12,6 @@ jobs:
         CONFIG: linux_64_
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_aarch64_:
-        CONFIG: linux_aarch64_
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64
       linux_ppc64le_:
         CONFIG: linux_ppc64le_
         UPLOAD_PACKAGES: 'True'
