@@ -1,11 +1,11 @@
-About gh
-========
+About gh-feedstock
+==================
+
+Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/gh-feedstock/blob/main/LICENSE.txt)
 
 Home: https://github.com/cli/cli
 
 Package license: Apache-2.0
-
-Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/gh-feedstock/blob/main/LICENSE.txt)
 
 Summary: Github CLI.
 
