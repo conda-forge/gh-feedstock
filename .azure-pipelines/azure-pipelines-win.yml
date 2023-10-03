@@ -17,6 +17,7 @@ jobs:
     UPLOAD_TEMP: D:\\tmp
 
   steps:
+
     - task: PythonScript@0
       displayName: 'Download Miniforge'
       inputs:
@@ -35,55 +36,14 @@ jobs:
       displayName: Add conda to PATH
 
     - script: |
-        call activate base
-        mamba.exe install "python=3.10" conda-build conda pip boa conda-forge-ci-setup=3 -c conda-forge --strict-channel-priority --yes
-      displayName: Install conda-build
-
-    - script: set PYTHONUNBUFFERED=1
-      displayName: Set PYTHONUNBUFFERED
-
-    # Configure the VM
-    - script: |
-        call activate base
-        setup_conda_rc .\ ".\recipe" .\.ci_support\%CONFIG%.yaml
-      displayName: conda-forge CI setup
-
-    # Configure the VM.
-    - script: |
-        set "CI=azure"
-        call activate base
-        run_conda_forge_build_setup
-      displayName: conda-forge build setup
-
-    - script: |
-        call activate base
-        if EXIST LICENSE.txt (
-          copy LICENSE.txt "recipe\\recipe-scripts-license.txt"
-        )
-        if NOT [%HOST_PLATFORM%] == [%BUILD_PLATFORM%] (
-          set "EXTRA_CB_OPTIONS=%EXTRA_CB_OPTIONS% --no-test"
-        )
-        conda.exe mambabuild "recipe" -m .ci_support\%CONFIG%.yaml --suppress-variables %EXTRA_CB_OPTIONS%
-      displayName: Build recipe
+        call ".scripts\run_win_build.bat"
+      displayName: Run Windows build
       env:
         PYTHONUNBUFFERED: 1
-    - script: |
-        set "FEEDSTOCK_NAME=%BUILD_REPOSITORY_NAME:*/=%"
-        call activate base
-        validate_recipe_outputs "%FEEDSTOCK_NAME%"
-      displayName: Validate Recipe Outputs
-
-    - script: |
-        set "GIT_BRANCH=%BUILD_SOURCEBRANCHNAME%"
-        set "FEEDSTOCK_NAME=%BUILD_REPOSITORY_NAME:*/=%"
-        set "TEMP=$(UPLOAD_TEMP)"
-        if not exist "%TEMP%\" md "%TEMP%"
-        set "TMP=%TEMP%"
-        call activate base
-        upload_package --validate --feedstock-name="%FEEDSTOCK_NAME%" .\ ".\recipe" .ci_support\%CONFIG%.yaml
-      displayName: Upload package
-      env:
+        CONFIG: $(CONFIG)
+        CI: azure
+        UPLOAD_PACKAGES: $(UPLOAD_PACKAGES)
+        UPLOAD_TEMP: $(UPLOAD_TEMP)
         BINSTAR_TOKEN: $(BINSTAR_TOKEN)
         FEEDSTOCK_TOKEN: $(FEEDSTOCK_TOKEN)
         STAGING_BINSTAR_TOKEN: $(STAGING_BINSTAR_TOKEN)
-      condition: and(succeeded(), not(eq(variables['UPLOAD_PACKAGES'], 'False')), not(eq(variables['Build.Reason'], 'PullRequest')))
