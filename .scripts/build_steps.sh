@@ -34,7 +34,7 @@ CONDARC
 mamba install --update-specs --yes --quiet --channel conda-forge --strict-channel-priority \
     pip mamba conda-build boa conda-forge-ci-setup=3
 mamba update --update-specs --yes --quiet --channel conda-forge --strict-channel-priority \
-    pip mamba conda-build boa conda-forge-ci-setup
+    pip mamba conda-build boa conda-forge-ci-setup=3
 
 # set up the condarc
 setup_conda_rc "${FEEDSTOCK_ROOT}" "${RECIPE_ROOT}" "${CONFIG_FILE}"
