@@ -15,6 +15,9 @@ matrix:
 script:
   - export CI=travis
   - export GIT_BRANCH="$TRAVIS_BRANCH"
+  - export flow_run_id="travis_$TRAVIS_JOB_ID"
+  - export sha="$TRAVIS_COMMIT"
+  - export remote_url="https://github.com/$TRAVIS_REPO_SLUG"
   - export FEEDSTOCK_NAME=$(basename ${TRAVIS_REPO_SLUG})
   - if [[ "${TRAVIS_PULL_REQUEST:-}" == "false" ]]; then export IS_PR_BUILD="False"; else export IS_PR_BUILD="True"; fi
 
