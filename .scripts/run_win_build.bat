@@ -55,7 +55,7 @@ call :end_group
 
 :: Build the recipe
 echo Building recipe
-conda.exe build "recipe" -m .ci_support\%CONFIG%.yaml --suppress-variables %EXTRA_CB_OPTIONS%
+conda-build.exe "recipe" -m .ci_support\%CONFIG%.yaml --suppress-variables %EXTRA_CB_OPTIONS%
 if !errorlevel! neq 0 exit /b !errorlevel!
 
 :: Prepare some environment variables for the upload step
