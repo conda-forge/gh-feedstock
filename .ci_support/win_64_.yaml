@@ -1,3 +1,5 @@
+c_stdlib:
+- vs
 channel_sources:
 - conda-forge
 channel_targets:
