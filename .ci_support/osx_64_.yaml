@@ -1,5 +1,9 @@
 MACOSX_DEPLOYMENT_TARGET:
 - '10.9'
+c_stdlib:
+- macosx_deployment_target
+c_stdlib_version:
+- '10.9'
 channel_sources:
 - conda-forge
 channel_targets:

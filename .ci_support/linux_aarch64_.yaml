@@ -1,5 +1,9 @@
 BUILD:
 - aarch64-conda_cos7-linux-gnu
+c_stdlib:
+- sysroot
+c_stdlib_version:
+- '2.17'
 cdt_arch:
 - aarch64
 cdt_name:
@@ -14,3 +18,6 @@ go_compiler:
 - go-nocgo
 target_platform:
 - linux-aarch64
+zip_keys:
+- - c_stdlib_version
+  - cdt_name
