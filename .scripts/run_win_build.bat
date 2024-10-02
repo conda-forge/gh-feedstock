@@ -24,7 +24,7 @@ set "CONDA_LIBMAMBA_SOLVER_NO_CHANNELS_FROM_INSTALLED=1"
 
 :: Provision the necessary dependencies to build the recipe later
 echo Installing dependencies
-mamba.exe install "python=3.10" pip mamba conda-build conda-forge-ci-setup=4 "conda-build>=24.1" -c conda-forge --strict-channel-priority --yes
+mamba.exe install pip mamba conda-build conda-forge-ci-setup=4 "conda-build>=24.1" -c conda-forge --strict-channel-priority --yes
 if !errorlevel! neq 0 exit /b !errorlevel!
 
 :: Set basic configuration
@@ -48,7 +48,7 @@ if NOT [%HOST_PLATFORM%] == [%BUILD_PLATFORM%] (
 )
 
 if NOT [%flow_run_id%] == [] (
-    set "EXTRA_CB_OPTIONS=%EXTRA_CB_OPTIONS% --extra-meta flow_run_id=%flow_run_id% remote_url=%remote_url% sha=%sha%"
+        set "EXTRA_CB_OPTIONS=%EXTRA_CB_OPTIONS% --extra-meta flow_run_id=%flow_run_id% remote_url=%remote_url% sha=%sha%"
 )
 
 call :end_group
