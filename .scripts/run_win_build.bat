@@ -59,8 +59,8 @@ conda-build.exe "recipe" -m .ci_support\%CONFIG%.yaml --suppress-variables %EXTR
 if !errorlevel! neq 0 exit /b !errorlevel!
 
 call :start_group "Inspecting artifacts"
-:: inspect_artifacts was only added in conda-forge-ci-setup 4.6.0
-WHERE inspect_artifacts >nul 2>nul && inspect_artifacts || echo "inspect_artifacts needs conda-forge-ci-setup >=4.6.0"
+:: inspect_artifacts was only added in conda-forge-ci-setup 4.9.4
+WHERE inspect_artifacts >nul 2>nul && inspect_artifacts --recipe-dir ".\recipe" -m .ci_support\%CONFIG%.yaml || echo "inspect_artifacts needs conda-forge-ci-setup >=4.9.4"
 call :end_group
 
 :: Prepare some environment variables for the upload step
