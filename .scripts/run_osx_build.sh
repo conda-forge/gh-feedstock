@@ -88,8 +88,8 @@ else
 
     ( startgroup "Inspecting artifacts" ) 2> /dev/null
 
-    # inspect_artifacts was only added in conda-forge-ci-setup 4.6.0
-    command -v inspect_artifacts >/dev/null 2>&1 && inspect_artifacts || echo "inspect_artifacts needs conda-forge-ci-setup >=4.6.0"
+    # inspect_artifacts was only added in conda-forge-ci-setup 4.9.4
+    command -v inspect_artifacts >/dev/null 2>&1 && inspect_artifacts --recipe-dir ./recipe -m ./.ci_support/${CONFIG}.yaml || echo "inspect_artifacts needs conda-forge-ci-setup >=4.9.4"
 
     ( endgroup "Inspecting artifacts" ) 2> /dev/null
     ( startgroup "Validating outputs" ) 2> /dev/null
