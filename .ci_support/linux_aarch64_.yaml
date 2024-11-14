@@ -7,7 +7,7 @@ c_stdlib_version:
 cdt_arch:
 - aarch64
 cdt_name:
-- cos7
+- conda
 channel_sources:
 - conda-forge
 channel_targets:
@@ -18,6 +18,3 @@ go_compiler:
 - go-nocgo
 target_platform:
 - linux-aarch64
-zip_keys:
-- - c_stdlib_version
-  - cdt_name
