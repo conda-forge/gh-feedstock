@@ -9,7 +9,7 @@ channel_sources:
 channel_targets:
 - conda-forge main
 docker_image:
-- quay.io/condaforge/linux-anvil-ppc64le
+- quay.io/condaforge/linux-anvil-ppc64le:alma9
 go_compiler:
 - go-nocgo
 target_platform:
