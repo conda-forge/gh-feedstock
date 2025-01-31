@@ -22,3 +22,6 @@
 /build_artifacts
 
 *.pyc
+
+# Rattler-build's artifacts are in `output` when not specifying anything.
+/output
