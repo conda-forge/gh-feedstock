@@ -24,4 +24,5 @@ bld.bat text eol=crlf
 /README.md linguist-generated=true
 azure-pipelines.yml linguist-generated=true
 build-locally.py linguist-generated=true
+pixi.toml linguist-generated=true
 shippable.yml linguist-generated=true
