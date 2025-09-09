@@ -1,5 +1,5 @@
 {% set name = "gh" %}
-{% set version = "2.78.0" %}
+{% set version = "2.79.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/cli/cli/archive/v{{ version }}.tar.gz
-  sha256: 9eeb969222a92bdad47dded2527649cd467a6e2321643cc30e1f12d00490befe
+  sha256: 2408f3f5d69ea7efde1f174ee058ca011b8ab24e583178c6f090f3e91767bda4
 
 build:
   script_env:
