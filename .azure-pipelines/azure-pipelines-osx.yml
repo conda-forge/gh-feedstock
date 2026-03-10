@@ -5,15 +5,17 @@
 jobs:
 - job: osx
   pool:
-    vmImage: macOS-15
+    vmImage: $(VMIMAGE)
   strategy:
     matrix:
       osx_64_:
         CONFIG: osx_64_
         UPLOAD_PACKAGES: 'True'
+        VMIMAGE: macOS-15
       osx_arm64_:
         CONFIG: osx_arm64_
         UPLOAD_PACKAGES: 'True'
+        VMIMAGE: macOS-15
   timeoutInMinutes: 360
   variables: {}
 
