@@ -1,0 +1,15 @@
+# This file was added automatically by admin-migrations. Do not modify.
+# It ensures that Github Actions can run once rerendered for the first time.
+# -*- mode: yaml -*-
+
+name: Build conda package
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Disabled build
+    runs-on: ubuntu-slim
+    if: false
+    steps:
+    - run: exit 0
