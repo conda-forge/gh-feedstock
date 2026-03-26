@@ -11,6 +11,8 @@ source .scripts/logging_utils.sh
 
 set -xeo pipefail
 
+DOCKER_EXECUTABLE="${DOCKER_EXECUTABLE:-docker}"
+
 THISDIR="$( cd "$( dirname "$0" )" >/dev/null && pwd )"
 PROVIDER_DIR="$(basename "$THISDIR")"
 
@@ -27,7 +29,7 @@ if [[ "${sha:-}" == "" ]]; then
   popd
 fi
 
-docker info
+${DOCKER_EXECUTABLE} info
 
 # In order for the conda-build process in the container to write to the mounted
 # volumes, we need to run with the same id as the host machine, which is
@@ -35,6 +37,7 @@ docker info
 export HOST_USER_ID=$(id -u)
 # Check if docker-machine is being used (normally on OSX) and get the uid from
 # the VM
+
 if hash docker-machine 2> /dev/null && docker-machine active > /dev/null; then
     export HOST_USER_ID=$(docker-machine ssh $(docker-machine active) id -u)
 fi
@@ -76,16 +79,34 @@ if [ -z "${CI}" ]; then
     DOCKER_RUN_ARGS="-it ${DOCKER_RUN_ARGS}"
 fi
 
-( endgroup "Configure Docker" ) 2> /dev/null
+# Default volume suffix for Docker (preserve original behavior)
+VOLUME_SUFFIX=",z"
 
+# Podman-specific handling
+if [ "${DOCKER_EXECUTABLE}" = "podman" ]; then
+    # Fix file permissions for rootless podman builds
+    podman unshare chown -R ${HOST_USER_ID}:${HOST_USER_ID} "${ARTIFACTS}"
+    podman unshare chown -R ${HOST_USER_ID}:${HOST_USER_ID} "${RECIPE_ROOT}"
+
+    # Add SELinux label only if enforcing
+    if command -v getenforce &>/dev/null && [ "$(getenforce)" = "Enforcing" ]; then
+        VOLUME_SUFFIX=",z"
+    else
+        VOLUME_SUFFIX=""
+    fi
+fi
+
+( endgroup "Configure Docker" ) 2> /dev/null
 ( startgroup "Start Docker" ) 2> /dev/null
 
 export UPLOAD_PACKAGES="${UPLOAD_PACKAGES:-True}"
 export IS_PR_BUILD="${IS_PR_BUILD:-False}"
-docker pull "${DOCKER_IMAGE}"
-docker run ${DOCKER_RUN_ARGS} \
-           -v "${RECIPE_ROOT}":/home/conda/recipe_root:rw,z,delegated \
-           -v "${FEEDSTOCK_ROOT}":/home/conda/feedstock_root:rw,z,delegated \
+
+${DOCKER_EXECUTABLE} pull "${DOCKER_IMAGE}"
+
+${DOCKER_EXECUTABLE} run ${DOCKER_RUN_ARGS} \
+           -v "${RECIPE_ROOT}":/home/conda/recipe_root:rw${VOLUME_SUFFIX},delegated \
+           -v "${FEEDSTOCK_ROOT}":/home/conda/feedstock_root:rw${VOLUME_SUFFIX},delegated \
            -e CONFIG \
            -e HOST_USER_ID \
            -e UPLOAD_PACKAGES \
