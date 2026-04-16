@@ -29,7 +29,7 @@ source:
     file_name: LICENSE-in-toto-attestation-2
 
 build:
-  number: 0
+  number: 1
   script:
     env:
       GH_VERSION: v{{ version }}
