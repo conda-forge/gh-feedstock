@@ -204,5 +204,6 @@ Feedstock Maintainers
 * [@matthiasdiener](https://github.com/matthiasdiener/)
 * [@mxr-conda](https://github.com/mxr-conda/)
 * [@oblute](https://github.com/oblute/)
+* [@pavelzw](https://github.com/pavelzw/)
 * [@rluria14](https://github.com/rluria14/)
 

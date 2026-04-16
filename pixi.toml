@@ -1,0 +1,82 @@
+# -*- mode: toml -*-
+# This file was generated automatically from conda-smithy. To update this configuration,
+# update the conda-forge.yml and/or the recipe/meta.yaml.
+"$schema" = "https://pixi.sh/v0.59.0/schema/manifest/schema.json"
+
+[workspace]
+name = "gh-feedstock"
+version = "3.60.0"  # conda-smithy version used to generate this file
+description = "Pixi configuration for conda-forge/gh-feedstock"
+authors = ["@conda-forge/gh"]
+channels = ["conda-forge"]
+platforms = ["linux-64", "linux-aarch64", "osx-64", "osx-arm64", "win-64"]
+requires-pixi = ">=0.59.0"
+
+[dependencies]
+conda-build = ">=24.1"
+conda-forge-ci-setup = "4.*"
+rattler-build = "*"
+
+[tasks.inspect-all]
+cmd = "inspect_artifacts --all-packages"
+description = "List contents of all packages found in rattler-build build directory."
+[tasks.build]
+cmd = "rattler-build build --recipe recipe"
+description = "Build gh-feedstock directly (without setup scripts), no particular variant specified"
+[tasks."build-linux_64_"]
+cmd = "rattler-build build --recipe recipe -m .ci_support/linux_64_.yaml"
+description = "Build gh-feedstock with variant linux_64_ directly (without setup scripts)"
+[tasks."inspect-linux_64_"]
+cmd = "inspect_artifacts --recipe-dir recipe -m .ci_support/linux_64_.yaml"
+description = "List contents of gh-feedstock packages built for variant linux_64_"
+[tasks."build-linux_aarch64_"]
+cmd = "rattler-build build --recipe recipe -m .ci_support/linux_aarch64_.yaml"
+description = "Build gh-feedstock with variant linux_aarch64_ directly (without setup scripts)"
+[tasks."inspect-linux_aarch64_"]
+cmd = "inspect_artifacts --recipe-dir recipe -m .ci_support/linux_aarch64_.yaml"
+description = "List contents of gh-feedstock packages built for variant linux_aarch64_"
+[tasks."build-linux_ppc64le_"]
+cmd = "rattler-build build --recipe recipe -m .ci_support/linux_ppc64le_.yaml"
+description = "Build gh-feedstock with variant linux_ppc64le_ directly (without setup scripts)"
+[tasks."inspect-linux_ppc64le_"]
+cmd = "inspect_artifacts --recipe-dir recipe -m .ci_support/linux_ppc64le_.yaml"
+description = "List contents of gh-feedstock packages built for variant linux_ppc64le_"
+[tasks."build-osx_64_"]
+cmd = "rattler-build build --recipe recipe -m .ci_support/osx_64_.yaml"
+description = "Build gh-feedstock with variant osx_64_ directly (without setup scripts)"
+[tasks."inspect-osx_64_"]
+cmd = "inspect_artifacts --recipe-dir recipe -m .ci_support/osx_64_.yaml"
+description = "List contents of gh-feedstock packages built for variant osx_64_"
+[tasks."build-osx_arm64_"]
+cmd = "rattler-build build --recipe recipe -m .ci_support/osx_arm64_.yaml"
+description = "Build gh-feedstock with variant osx_arm64_ directly (without setup scripts)"
+[tasks."inspect-osx_arm64_"]
+cmd = "inspect_artifacts --recipe-dir recipe -m .ci_support/osx_arm64_.yaml"
+description = "List contents of gh-feedstock packages built for variant osx_arm64_"
+[tasks."build-win_64_"]
+cmd = "rattler-build build --recipe recipe -m .ci_support/win_64_.yaml"
+description = "Build gh-feedstock with variant win_64_ directly (without setup scripts)"
+[tasks."inspect-win_64_"]
+cmd = "inspect_artifacts --recipe-dir recipe -m .ci_support/win_64_.yaml"
+description = "List contents of gh-feedstock packages built for variant win_64_"
+
+[feature.smithy.dependencies]
+conda-smithy = "*"
+[feature.smithy.tasks.build-locally]
+cmd = "python ./build-locally.py"
+description = "Build packages locally using the same setup scripts used in conda-forge's CI"
+[feature.smithy.tasks.smithy]
+cmd = "conda-smithy"
+description = "Run conda-smithy. Pass necessary arguments."
+[feature.smithy.tasks.rerender]
+cmd = "conda-smithy rerender"
+description = "Rerender the feedstock."
+[feature.smithy.tasks.lint]
+cmd = "conda-smithy lint --conda-forge recipe"
+description = "Lint the feedstock recipe"
+
+[environments]
+smithy = ["smithy"]
+
+# This is a copy of default, to be enabled by build_steps.sh during Docker builds
+# __PLATFORM_SPECIFIC_ENV__ = []
