@@ -1,0 +1,102 @@
+context:
+  version: 2.89.0
+
+package:
+  name: gh
+  version: ${{ version }}
+
+source:
+  - url: https://github.com/cli/cli/archive/v${{ version }}.tar.gz
+    sha256: bc9c11f75e4aeb7e1f0bd5f543a3edabb8958655025f8cdc3d9bbe14435a7441
+    target_directory: src
+  - url: https://raw.githubusercontent.com/in-toto/in-toto-golang/refs/heads/master/LICENSE
+    sha256: b5c26c8a2ad6dd7cac6646e470a32ee42d23c36124caac4e66c989b6545b2a44
+    file_name: LICENSE-in-toto-golang-1
+  - url: https://www.apache.org/licenses/LICENSE-2.0.txt
+    sha256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
+    file_name: LICENSE-in-toto-golang-2
+  - url: https://raw.githubusercontent.com/cyberphone/json-canonicalization/refs/heads/master/LICENSE
+    sha256: 6821faaddedf2d78c95bb6d98b127e9e616097afd2f6bcc34389f000d13ab12d
+    file_name: LICENSE-json-canonicalization-1
+  - url: https://www.apache.org/licenses/LICENSE-2.0.txt
+    sha256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
+    file_name: LICENSE-json-canonicalization-2
+  - url: https://raw.githubusercontent.com/in-toto/attestation/refs/heads/main/LICENSE
+    sha256: b3a6ac899861c2c28a1abd5c7ea8733fefaed6938d730e099c42671386032aeb
+    file_name: LICENSE-in-toto-attestation-1
+  - url: https://www.apache.org/licenses/LICENSE-2.0.txt
+    sha256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
+    file_name: LICENSE-in-toto-attestation-2
+
+build:
+  number: 1
+  script:
+    env:
+      GH_VERSION: v{{ version }}
+    content:
+      - cd src
+      - cd cmd/gh
+      - go-licenses save . --save_path ../../../library_licenses --ignore github.com/cyberphone/json-canonicalization --ignore github.com/in-toto/attestation --ignore github.com/in-toto/in-toto-golang
+      - if: unix
+        then:
+          - go build -v -o $PREFIX/bin/gh -ldflags="-s -w -X github.com/cli/cli/v2/internal/build.Version=${{ version }}"
+        else:
+          - go build -v -o %LIBRARY_BIN%\gh.exe -ldflags="-s -X github.com/cli/cli/v2/internal/build.Version=${{ version }}"
+      - cd ../..
+      - if: unix
+        then:
+          - make manpages
+          - mkdir -p $PREFIX/share/man/man1
+          - install -m644 ./share/man/man1/* $PREFIX/share/man/man1
+          - mkdir -p $PREFIX/share/zsh/site-functions $PREFIX/share/bash-completion/completions $PREFIX/share/fish/vendor_completions.d
+          - $PREFIX/bin/gh completion --shell zsh > $PREFIX/share/zsh/site-functions/_gh
+          - $PREFIX/bin/gh completion --shell bash > $PREFIX/share/bash-completion/completions/gh
+          - $PREFIX/bin/gh completion --shell fish > $PREFIX/share/fish/vendor_completions.d/gh.fish
+
+requirements:
+  build:
+    - ${{ compiler('go-nocgo') }}
+    - go-licenses
+    - if: unix
+      then:
+        - make
+
+tests:
+  - script:
+      - gh help
+      - gh version
+  - package_contents:
+      bin:
+        - gh
+      files:
+        - if: unix
+          then:
+            - share/bash-completion/completions/gh
+            - share/fish/vendor_completions.d/gh.fish
+            - share/zsh/site-functions/_gh
+            - share/man/man1/gh*
+      strict: true
+
+about:
+  homepage: https://github.com/cli/cli
+  license: Apache-2.0
+  license_file:
+    - src/LICENSE
+    - library_licenses/
+    - LICENSE-in-toto-golang-1
+    - LICENSE-in-toto-golang-2
+    - LICENSE-in-toto-attestation-1
+    - LICENSE-in-toto-attestation-2
+    - LICENSE-json-canonicalization-1
+    - LICENSE-json-canonicalization-2
+  summary: Github CLI.
+  documentation: https://cli.github.com/
+  repository: https://github.com/cli/cli
+
+extra:
+  recipe-maintainers:
+    - mxr-conda
+    - rluria14
+    - oblute
+    - matthiasdiener
+    - pavelzw

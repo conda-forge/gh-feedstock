@@ -1,6 +1,9 @@
 conda_forge_output_validation: true
-provider: {linux_aarch64: azure, linux_ppc64le: azure}
-build_platform: {osx_arm64: osx_64}
+provider:
+  linux_aarch64: default
+  osx_arm64: default
+build_platform:
+  linux_ppc64le: linux_64
 github:
   branch_name: main
   tooling_branch_name: main
@@ -9,3 +12,5 @@ conda_build:
 test: native_and_emulated
 bot:
   automerge: true
+conda_build_tool: rattler-build
+conda_install_tool: pixi

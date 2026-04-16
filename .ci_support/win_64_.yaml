@@ -1,10 +1,6 @@
-c_stdlib:
-- vs
 channel_sources:
 - conda-forge
 channel_targets:
 - conda-forge main
-go_compiler:
-- go-nocgo
 target_platform:
 - win-64
