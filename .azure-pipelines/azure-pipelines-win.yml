@@ -11,6 +11,9 @@ jobs:
       win_64_:
         CONFIG: win_64_
         UPLOAD_PACKAGES: 'True'
+      win_arm64_:
+        CONFIG: win_arm64_
+        UPLOAD_PACKAGES: 'True'
   timeoutInMinutes: 360
   variables:
     CONDA_BLD_PATH: D:\\bld\\
