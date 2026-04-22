@@ -1,5 +1,5 @@
 context:
-  version: "2.90.0"
+  version: "2.91.0"
 
 package:
   name: gh
@@ -7,7 +7,7 @@ package:
 
 source:
   - url: https://github.com/cli/cli/archive/v${{ version }}.tar.gz
-    sha256: 87a6a3b3df1155e9d253ec6ae273d9e018773498b7ce7570f896a7cb75b64e39
+    sha256: 6409f89e1b8a69347fbdfea4b60cb78d4c58217c3d96c858ce0eb8b0ae853b59
     target_directory: src
   - url: https://raw.githubusercontent.com/in-toto/in-toto-golang/refs/heads/master/LICENSE
     sha256: b5c26c8a2ad6dd7cac6646e470a32ee42d23c36124caac4e66c989b6545b2a44
