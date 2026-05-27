@@ -5,7 +5,7 @@
 
 [workspace]
 name = "gh-feedstock"
-version = "3.61.2"  # conda-smithy version used to generate this file
+version = "3.62.0"  # conda-smithy version used to generate this file
 description = "Pixi configuration for conda-forge/gh-feedstock"
 authors = ["@conda-forge/gh"]
 channels = ["conda-forge"]
@@ -13,7 +13,7 @@ platforms = ["linux-64", "linux-aarch64", "osx-64", "osx-arm64", "win-64"]
 requires-pixi = ">=0.59.0"
 
 [dependencies]
-conda-build = ">=24.1"
+conda-build = ">=26.3"
 conda-forge-ci-setup = "4.*"
 rattler-build = "*"
 
