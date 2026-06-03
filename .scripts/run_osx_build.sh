@@ -63,7 +63,7 @@ if [[ "${OSX_SDK_DIR:-}" == "" ]]; then
     /usr/bin/sudo chown "${USER}" "${OSX_SDK_DIR}"
   fi
 else
-  if tmpf=$(mktemp -p "$OSX_SDK_DIR" tmp.XXXXXXXX 2>/dev/null); then
+  if tmpf=$(mktemp "$OSX_SDK_DIR"/tmp.XXXXXXXX 2>/dev/null); then
       rm -f "$tmpf"
       echo "OSX_SDK_DIR is writeable without sudo, continuing"
   else
