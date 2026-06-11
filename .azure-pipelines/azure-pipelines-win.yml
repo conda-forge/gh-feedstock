@@ -14,6 +14,12 @@ jobs:
         build_workspace_dir: D:\\bld\\
         store_build_artifacts: false
         tools_install_dir: D:\Miniforge
+      win_arm64_:
+        CONFIG: win_arm64_
+        UPLOAD_PACKAGES: 'True'
+        build_workspace_dir: C:\\bld\\
+        store_build_artifacts: false
+        tools_install_dir: C:\Miniforge
   timeoutInMinutes: 360
   variables:
     UPLOAD_TEMP: D:\\tmp
