@@ -96,6 +96,14 @@ if [ "${DOCKER_EXECUTABLE}" = "podman" ]; then
     fi
 fi
 
+# When running on GitHub Actions, mount the step summary file into the container
+# and point GITHUB_STEP_SUMMARY at it so that rattler-build's GitHub integration
+# can write its summary. GitHub writes the file out to the job summary after the
+# step finishes.
+if [[ -n "${GITHUB_STEP_SUMMARY:-}" ]]; then
+    DOCKER_RUN_ARGS="${DOCKER_RUN_ARGS} -v ${GITHUB_STEP_SUMMARY}:/home/conda/github_step_summary:rw${VOLUME_SUFFIX},delegated -e GITHUB_STEP_SUMMARY=/home/conda/github_step_summary"
+fi
+
 ( endgroup "Configure Docker" ) 2> /dev/null
 ( startgroup "Start Docker" ) 2> /dev/null
 
@@ -114,6 +122,8 @@ ${DOCKER_EXECUTABLE} run ${DOCKER_RUN_ARGS} \
            -e GIT_BRANCH \
            -e UPLOAD_ON_BRANCH \
            -e CI \
+           -e RATTLER_BUILD_COLOR \
+           -e RATTLER_BUILD_ENABLE_GITHUB_INTEGRATION \
            -e FEEDSTOCK_NAME \
            -e CPU_COUNT \
            -e BUILD_WITH_CONDA_DEBUG \

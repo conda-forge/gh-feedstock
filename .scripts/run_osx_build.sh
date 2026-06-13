@@ -84,7 +84,15 @@ if [[ -f LICENSE.txt ]]; then
 fi
 
 if [[ "${BUILD_WITH_CONDA_DEBUG:-0}" == 1 ]]; then
-    echo "rattler-build does not currently support debug mode"
+    export CONDA_BLD_PATH="${CONDA_BLD_PATH:-${FEEDSTOCK_ROOT:-$PWD}/build_artifacts}"
+    rattler-build debug setup \
+        --recipe ./recipe \
+        -m ./.ci_support/${CONFIG}.yaml \
+        --target-platform "${HOST_PLATFORM}" \
+        ${BUILD_OUTPUT_ID:+--output-name "${BUILD_OUTPUT_ID}"} \
+        ${EXTRA_CB_OPTIONS:-}
+
+    rattler-build debug shell
 else
 
     if [[ "${HOST_PLATFORM}" != "${BUILD_PLATFORM}" ]]; then
