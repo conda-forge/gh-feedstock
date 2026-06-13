@@ -122,6 +122,7 @@ ${DOCKER_EXECUTABLE} run ${DOCKER_RUN_ARGS} \
            -e GIT_BRANCH \
            -e UPLOAD_ON_BRANCH \
            -e CI \
+           -e GITHUB_ACTIONS \
            -e RATTLER_BUILD_COLOR \
            -e RATTLER_BUILD_ENABLE_GITHUB_INTEGRATION \
            -e FEEDSTOCK_NAME \
