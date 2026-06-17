@@ -5,7 +5,7 @@
 
 [workspace]
 name = "gh-feedstock"
-version = "2026.5.29"  # conda-smithy version used to generate this file
+version = "2026.6.14"  # conda-smithy version used to generate this file
 description = "Pixi configuration for conda-forge/gh-feedstock"
 authors = ["@conda-forge/gh"]
 channels = ["conda-forge"]
