@@ -69,16 +69,37 @@ if [[ -f "${FEEDSTOCK_ROOT}/LICENSE.txt" ]]; then
 fi
 
 if [[ "${BUILD_WITH_CONDA_DEBUG:-0}" == 1 ]]; then
-    echo "rattler-build currently doesn't support debug mode"
-else
+    # differences between conda-build vs. rattler-build
+    #   - 1 step (conda debug + manually open shell) vs. 2 step (rb debug {setup, shell})
+    #   - recipe is positional vs. --recipe "${RECIPE_ROOT}"
+    #   - --output-id vs. --output-name
+    #   - --clobber-file vs. none
+    #   - none vs. --target-platform
+    export CONDA_BLD_PATH="${CONDA_BLD_PATH:-${FEEDSTOCK_ROOT}/build_artifacts}"
+    rattler-build debug setup \
+        --recipe "${RECIPE_ROOT}" \
+        -m "${CI_SUPPORT}/${CONFIG}.yaml" \
+        ${EXTRA_CB_OPTIONS:-} \
+        ${BUILD_OUTPUT_ID:+--output-name "${BUILD_OUTPUT_ID}"} \
+        --target-platform "${HOST_PLATFORM}"
 
-    rattler-build build --recipe "${RECIPE_ROOT}" \
-     -m "${CI_SUPPORT}/${CONFIG}.yaml" \
-     ${EXTRA_CB_OPTIONS:-} \
-     --target-platform "${HOST_PLATFORM}" \
-     --extra-meta flow_run_id="${flow_run_id:-}" \
-     --extra-meta remote_url="${remote_url:-}" \
-     --extra-meta sha="${sha:-}"
+    rattler-build debug shell
+else
+    # differences between conda-build vs. rattler-build
+    #   - recipe is positional vs. --recipe "${RECIPE_ROOT}"
+    #   - --suppress-variables vs. none
+    #   - --clobber-file vs. none
+    #   - none vs. --target-platform
+    #   - --extra-meta a=b c=d vs. --extra-meta a=b --extra-meta c=d
+
+    rattler-build build \
+        --recipe "${RECIPE_ROOT}" \
+        -m "${CI_SUPPORT}/${CONFIG}.yaml" \
+        ${EXTRA_CB_OPTIONS:-} \
+        --target-platform "${HOST_PLATFORM}" \
+        --extra-meta flow_run_id="${flow_run_id:-}" \
+        --extra-meta remote_url="${remote_url:-}" \
+        --extra-meta sha="${sha:-}"
     ( startgroup "Inspecting artifacts" ) 2> /dev/null
 
     # inspect_artifacts was only added in conda-forge-ci-setup 4.9.4
