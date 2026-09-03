@@ -27,6 +27,9 @@ source:
   - url: https://www.apache.org/licenses/LICENSE-2.0.txt
     sha256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
     file_name: LICENSE-in-toto-attestation-2
+  - url: https://raw.githubusercontent.com/alecthomas/chroma/refs/heads/master/COPYING
+    sha256: 13654b052f885cb3fa47d7343e13975d9c8a64c3bcd84993c35d5eb01f22b23f
+    file_name: LICENSE-chroma
 
 build:
   number: 0
@@ -36,7 +39,7 @@ build:
     content:
       - cd src
       - cd cmd/gh
-      - go-licenses save . --save_path ../../../library_licenses --ignore github.com/cyberphone/json-canonicalization --ignore github.com/in-toto/attestation --ignore github.com/in-toto/in-toto-golang
+      - go-licenses save . --save_path ../../../library_licenses --ignore github.com/cyberphone/json-canonicalization --ignore github.com/in-toto/attestation --ignore github.com/in-toto/in-toto-golang --ignore github.com/alecthomas/chroma
       - if: unix
         then:
           - go build -v -o $PREFIX/bin/gh -ldflags="-s -w -X github.com/cli/cli/v2/internal/build.Version=${{ version }}"
@@ -89,6 +92,7 @@ about:
     - LICENSE-in-toto-attestation-2
     - LICENSE-json-canonicalization-1
     - LICENSE-json-canonicalization-2
+    - LICENSE-chroma
   summary: Github CLI.
   documentation: https://cli.github.com/
   repository: https://github.com/cli/cli
