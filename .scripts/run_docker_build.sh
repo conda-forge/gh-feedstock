@@ -84,9 +84,9 @@ VOLUME_SUFFIX=",z"
 
 # Podman-specific handling
 if [ "${DOCKER_EXECUTABLE}" = "podman" ]; then
-    # Fix file permissions for rootless podman builds
-    podman unshare chown -R ${HOST_USER_ID}:${HOST_USER_ID} "${ARTIFACTS}"
-    podman unshare chown -R ${HOST_USER_ID}:${HOST_USER_ID} "${RECIPE_ROOT}"
+    # Fix file permissions for rootless podman builds. In addition to `recipe/`
+    # and `build_artifacts`, `.scripts` also needs to be available in the container.
+    podman unshare chown -R ${HOST_USER_ID}:${HOST_USER_ID} "${FEEDSTOCK_ROOT}"
 
     # Add SELinux label only if enforcing
     if command -v getenforce &>/dev/null && [ "$(getenforce)" = "Enforcing" ]; then
@@ -143,4 +143,4 @@ ${DOCKER_EXECUTABLE} run ${DOCKER_RUN_ARGS} \
 test -f "$DONE_CANARY"
 
 # This closes the last group opened in `build_steps.sh`
-( endgroup "Final checks" ) 2> /dev/null
+( endgroup "Leaving the Docker container" ) 2> /dev/null
