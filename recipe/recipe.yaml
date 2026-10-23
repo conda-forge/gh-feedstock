@@ -42,7 +42,8 @@ build:
       - go-licenses save . --save_path ../../../library_licenses --ignore github.com/cyberphone/json-canonicalization --ignore github.com/in-toto/attestation --ignore github.com/in-toto/in-toto-golang --ignore github.com/alecthomas/chroma
       - if: unix
         then:
-          - go build -v -o $PREFIX/bin/gh -ldflags="-s -w -X github.com/cli/cli/v2/internal/build.Version=${{ version }}"
+          # PIE builds of gh crash on startup on linux-ppc64le (os.Stdout is nil during package init)
+          - go build -v ${{ "-buildmode=exe" if ppc64le else "" }} -o $PREFIX/bin/gh -ldflags="-s -w -X github.com/cli/cli/v2/internal/build.Version=${{ version }}"
         else:
           - go build -v -o %LIBRARY_BIN%\gh.exe -ldflags="-s -X github.com/cli/cli/v2/internal/build.Version=${{ version }}"
       - cd ../..
