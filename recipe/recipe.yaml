@@ -49,15 +49,14 @@ build:
       - cd ../..
       - if: unix
         then:
-          # generate manpages and completions with build-platform binaries so they don't run under emulation when cross-compiling
+          # generate manpages with a build-platform binary; a target PIE build of gen-docs crashes on linux-ppc64le
           - GOOS= GOARCH= go run ./cmd/gen-docs --man-page --doc-path ./share/man/man1/
-          - GOOS= GOARCH= go build -o ./gh-build ./cmd/gh
           - mkdir -p $PREFIX/share/man/man1
           - install -m644 ./share/man/man1/* $PREFIX/share/man/man1
           - mkdir -p $PREFIX/share/zsh/site-functions $PREFIX/share/bash-completion/completions $PREFIX/share/fish/vendor_completions.d
-          - ./gh-build completion --shell zsh > $PREFIX/share/zsh/site-functions/_gh
-          - ./gh-build completion --shell bash > $PREFIX/share/bash-completion/completions/gh
-          - ./gh-build completion --shell fish > $PREFIX/share/fish/vendor_completions.d/gh.fish
+          - $PREFIX/bin/gh completion --shell zsh > $PREFIX/share/zsh/site-functions/_gh
+          - $PREFIX/bin/gh completion --shell bash > $PREFIX/share/bash-completion/completions/gh
+          - $PREFIX/bin/gh completion --shell fish > $PREFIX/share/fish/vendor_completions.d/gh.fish
 
 requirements:
   build:
