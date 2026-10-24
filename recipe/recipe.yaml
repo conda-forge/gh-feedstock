@@ -1,5 +1,5 @@
 context:
-  version: "2.102.1"
+  version: "2.103.1"
 
 package:
   name: gh
@@ -7,7 +7,7 @@ package:
 
 source:
   - url: https://github.com/cli/cli/archive/v${{ version }}.tar.gz
-    sha256: 6a6959d4da3302d95812d8ba1a96ffb3e21874badb0dc25f2819184c372157fd
+    sha256: 590a1fd4d9ba8e678ab5aef41c52dc1adff69379cb82cdbb7ee7a64ac33f2d04
     target_directory: src
   - url: https://raw.githubusercontent.com/in-toto/in-toto-golang/refs/heads/master/LICENSE
     sha256: b5c26c8a2ad6dd7cac6646e470a32ee42d23c36124caac4e66c989b6545b2a44
@@ -42,13 +42,15 @@ build:
       - go-licenses save . --save_path ../../../library_licenses --ignore github.com/cyberphone/json-canonicalization --ignore github.com/in-toto/attestation --ignore github.com/in-toto/in-toto-golang --ignore github.com/alecthomas/chroma
       - if: unix
         then:
-          - go build -v -o $PREFIX/bin/gh -ldflags="-s -w -X github.com/cli/cli/v2/internal/build.Version=${{ version }}"
+          # PIE builds of gh crash on startup on linux-ppc64le (os.Stdout is nil during package init)
+          - go build -v ${{ "-buildmode=exe" if ppc64le else "" }} -o $PREFIX/bin/gh -ldflags="-s -w -X github.com/cli/cli/v2/internal/build.Version=${{ version }}"
         else:
           - go build -v -o %LIBRARY_BIN%\gh.exe -ldflags="-s -X github.com/cli/cli/v2/internal/build.Version=${{ version }}"
       - cd ../..
       - if: unix
         then:
-          - make manpages
+          # generate manpages with a build-platform binary; a target PIE build of gen-docs crashes on linux-ppc64le
+          - GOOS= GOARCH= go run ./cmd/gen-docs --man-page --doc-path ./share/man/man1/
           - mkdir -p $PREFIX/share/man/man1
           - install -m644 ./share/man/man1/* $PREFIX/share/man/man1
           - mkdir -p $PREFIX/share/zsh/site-functions $PREFIX/share/bash-completion/completions $PREFIX/share/fish/vendor_completions.d
@@ -60,9 +62,6 @@ requirements:
   build:
     - ${{ compiler('go-nocgo') }}
     - go-licenses
-    - if: unix
-      then:
-        - make
 
 tests:
   - script:
