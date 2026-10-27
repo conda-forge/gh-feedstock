@@ -69,6 +69,11 @@ if [ -z "${DOCKER_IMAGE}" ]; then
     fi
 fi
 
+if [ -z "${DOCKER_PLATFORM}" ]; then
+    # this is set unconditionally in the variant configs -> no fallback
+    DOCKER_PLATFORM=$(cat .ci_support/${CONFIG}.yaml | grep '^DOCKER_PLATFORM:$' -A 1 | tail -n 1 | cut -b 3-)
+fi
+
 mkdir -p "$ARTIFACTS"
 DONE_CANARY="$ARTIFACTS/conda-forge-build-done-${CONFIG}"
 rm -f "$DONE_CANARY"
@@ -110,7 +115,7 @@ fi
 export UPLOAD_PACKAGES="${UPLOAD_PACKAGES:-True}"
 export IS_PR_BUILD="${IS_PR_BUILD:-False}"
 
-${DOCKER_EXECUTABLE} pull "${DOCKER_IMAGE}"
+${DOCKER_EXECUTABLE} pull --platform ${DOCKER_PLATFORM} "${DOCKER_IMAGE}"
 
 ${DOCKER_EXECUTABLE} run ${DOCKER_RUN_ARGS} \
            -v "${RECIPE_ROOT}":/home/conda/recipe_root:rw${VOLUME_SUFFIX},delegated \
