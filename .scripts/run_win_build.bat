@@ -26,8 +26,19 @@ set RECIPE_ROOT=%FEEDSTOCK_ROOT%\recipe
 set CI_SUPPORT=%FEEDSTOCK_ROOT%\.ci_support
 set CONFIG_FILE=%CI_SUPPORT%\%CONFIG%.yaml
 
-set "arch=64"
-if "%PROCESSOR_ARCHITECTURE%"=="ARM64" set "arch=arm64"
+set "MICROMAMBA_VERSION=2.10.0-0"
+set "MINIFORGE_VERSION=26.9.4-2"
+if "%PROCESSOR_ARCHITECTURE%"=="AMD64" (
+    set "short_arch=64"
+    set "full_arch=x86_64"
+    set "MICROMAMBA_SHA256=f8b4284bd4eb1134122eaf93b3ea6c7be567e596de5829e1a6f478e34e41974a"
+    set "MINIFORGE_SHA256=9d83983669bc5d3b5dd4c631454bf953c3caf4ac78b9c9ada9971e5b021d83c3"
+) else (
+    set "short_arch=arm64"
+    set "full_arch=arm64"
+    set "MICROMAMBA_SHA256=1fcb3463c684d02366a3d447c153d00922decb16999eef7fb4634d0942a9093e"
+    set "MINIFORGE_SHA256=4cbb52ff0239488723f5e7ed0f362d393fc471a733dcd5ee9b03c74f188010c4"
+)
 
 call :start_group "Provisioning base env with pixi"
 
@@ -46,7 +57,7 @@ if "%PIXI_CACHE_DIR%"=="%MINIFORGE_HOME%" (
 )
 set PIXI_ENV=build
 move /y pixi.toml pixi.toml.bak
-powershell -NoProfile -ExecutionPolicy unrestricted -Command "(Get-Content pixi.toml.bak -Encoding UTF8) -replace 'platforms = .*', 'platforms = [''win-%arch%'']' | Out-File pixi.toml -Encoding UTF8"
+powershell -NoProfile -ExecutionPolicy unrestricted -Command "(Get-Content pixi.toml.bak -Encoding UTF8) -replace 'platforms = .*', 'platforms = [''win-%short_arch%'']' | Out-File pixi.toml -Encoding UTF8"
 :: Git on Windows needs to run post link scripts to properly set up SSL certificates
 pixi config set --global run-post-link-scripts insecure
 if !errorlevel! neq 0 exit /b !errorlevel!
