@@ -28,8 +28,16 @@ export RATTLER_CACHE_DIR="${CONDA_BLD_PATH}/pkg_cache"
 ( endgroup "Configuring build environment" ) 2> /dev/null
 
 arch=$(uname -m)
+MICROMAMBA_VERSION="2.10.0-0"
+MINIFORGE_VERSION="26.9.4-2"
 if [[ "${arch}" == "x86_64" ]]; then
   arch="64"
+  MICROMAMBA_SHA256="8421462a1ef1df9f7acd114f9e2a24c1332ce4f4e29f44465b4acb44e2755172"
+  MINIFORGE_SHA256="30e82ce68875fc50b917a3a541ea0516272866584187f7ea980ce8eaf715807d"
+else
+  # arch is already correct
+  MICROMAMBA_SHA256="c547639f5caf742236641c362746abb4a3505774753ecd08fe341643670c4c01"
+  MINIFORGE_SHA256="fb567612b76f4ef46de326f04425dbe381b6afc6a66c545f5043255a5ef34258"
 fi
 
 ( startgroup "Provisioning base env with pixi" ) 2> /dev/null
